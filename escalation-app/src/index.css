@@ -1,5 +1,8 @@
+body {
+  background-color: red;
+}
 .main-container {
-  padding: 30px 30px;
+  padding: 30px 220px;
 }
 .ct-menu {
   padding: 30px 30px;
@@ -9,6 +12,14 @@
 }
 .escalator-container {
   padding: 10px 0px;
+}
+.white-font {
+  color:white;
+}
+.logo-icon {
+  color:white;
+  font-size:40px;
+  margin-right:10px;
 }
 .ct-menu a {
   text-decoration: none;
@@ -53,8 +64,10 @@ select {
   margin-bottom: 15px;
   font-size: 12px;
 }
+.ct-menu-header {
+  font-size: 18px;
+}
 .ct-menu-item {
-  border: 1px solid black;
   padding: 50px;
   border-radius: 8px;
   align-items: center;
@@ -62,6 +75,8 @@ select {
   display: grid;
   grid-template-columns: 10em;
   cursor: pointer;
+  background-color: #22577A;
+  color: white;
 }
 
 .selector-container {
@@ -106,13 +121,24 @@ select {
   border-radius: 7px;
   margin-bottom: 10px;
 }
+.page-header{
+  background-color: white;
+  margin-bottom: 10px;
+}
 
+.search-bar {
+  padding: 20px 10px;
+  width: 100%;
+
+}
+.search-input {
+  width: 90%;
+}
 .timeline-container {
   height: 100px;
 }
 .ct-menu-item:hover {
-  border: 1px solid black;
-  background-color: black;
+  background-color: #38a3A5;
   color: white;
   padding: 50px;
   border-radius: 8px;

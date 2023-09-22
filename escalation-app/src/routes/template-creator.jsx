@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect  } from 'react';
 import Timeline from '@mui/lab/Timeline';
 import TimelineItem, { timelineItemClasses } from '@mui/lab/TimelineItem';
 import TimelineSeparator from '@mui/lab/TimelineSeparator';
@@ -13,6 +13,29 @@ import Accordion from 'react-bootstrap/Accordion';
 
 
 function TemplateCreator() {
+
+  useEffect(() => {
+    // Define the API endpoint URL
+    const apiUrl = 'http://127.0.0.1:5000/templates'; // Replace with your API URL
+
+    // Fetch data from the API
+    fetch(apiUrl)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then((data) => {
+        setFormRecords(data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        setError(err);
+        setLoading(false);
+      });
+  }, []);
+
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
@@ -39,7 +62,7 @@ function TemplateCreator() {
       {
         header: 'Default',
         description: '',
-        items: [{ firstName: '', lastName: '' }],
+        items: [{ name: '', escalationPointid: 1, escalationpointtype:'user',slatime:'',tier:'tier' }],
       },
     ]);
   };
@@ -75,8 +98,7 @@ function TemplateCreator() {
         description: "description",
         content: formRecords[recordIndex].description,
         ownerid: 1,
-
-        
+        items: formRecords[recordIndex].items
       };
 
       const response = await fetch(url, {
@@ -106,11 +128,11 @@ function TemplateCreator() {
   <div>
     <div>
 
-      <div className='page-header'><h1>Escalation</h1><span onClick={()=>addRecord()}><MdOutlineAdd></MdOutlineAdd>Create New</span></div>
+      <div className='page-header'><div className="search-bar"><input className="search-input"></input></div><span onClick={()=>addRecord()}><MdOutlineAdd></MdOutlineAdd>Create New</span></div>
       <Accordion defaultActiveKey="0">
       {formRecords.map((record, recordIndex) => (
       <Accordion.Item eventKey={{recordIndex}}>
-      <Accordion.Header>{record.header}</Accordion.Header>
+      <Accordion.Header>{record.name}</Accordion.Header>
       <Accordion.Body >
       <div className='escalation-container'>
       <Button onClick={handleShow}><MdOutlineCircleNotifications></MdOutlineCircleNotifications>Manage Notification Content</Button>
@@ -167,8 +189,8 @@ function TemplateCreator() {
                 <input
                   placeholder='14 days'
                   type="text"
-                  name="firstName"
-                  value={item.firstName}
+                  name="slatime"
+                  value={item.slatime}
                   onChange={(e) => handleItemInputChange(recordIndex, index, e)}
                   required/>
               </div>
@@ -204,9 +226,9 @@ function TemplateCreator() {
             <input className='template-selector'
             placeholder='Header'
                   type="text"
-                  name="header"
-                  value={record.header}
-                  onChange={(e) => handleInputChange(recordIndex, 'header', e)}
+                  name="name"
+                  value={record.name}
+                  onChange={(e) => handleInputChange(recordIndex, 'name', e)}
                   required
                 />
           </div>

@@ -24,7 +24,7 @@ def add_user():
         data = request.json
         temp = TemplatesRepos()
         # Call the add_user method of the DatabaseHandler
-        result = temp.add_template(data['name'], data['description'],data['content'],data['ownerid'])
+        result = temp.add_template(data['name'], data['description'], data['content'], data['ownerid'], data['items'])
 
         return result
     except Exception as e:

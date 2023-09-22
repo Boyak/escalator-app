@@ -1,6 +1,8 @@
 from flask import jsonify
 import psycopg2
 
+from escalationstepstemplates_repo import GroupsRepos
+
 class TemplatesRepos:
     def __init__(self):
         # Database connection parameters
@@ -18,14 +20,15 @@ class TemplatesRepos:
             cursor = self.conn.cursor()
 
             # Define your SQL SELECT query
-            query = "SELECT templateid, name, description,content,ownerid FROM templates LIMIT 10"
+            query = "SELECT templateid, name, description,content,ownerid FROM templates"
             cursor.execute(query)
             templates = cursor.fetchall()
             if templates:
                 # Create a list of dictionaries where each dictionary represents a user row
                 users_list = []
+                stepsRepo = GroupsRepos()
                 for row in templates:
-                    items = get_ExcaltionStepsTemplates(row[0])
+                    items = stepsRepo.get_ExcaltionStepsTemplates(row[0])
                     user_dict = {
                         "template_id": row[0],
                         "name": row[1],
@@ -50,7 +53,7 @@ class TemplatesRepos:
             # Handle any exceptions here
             return "An error occurred."
         
-    def add_template(self, name, description,content,ownerid):
+    def add_template(self, name, description,content,ownerid, items):
         try:
             # Connect to the database
             self.conn = psycopg2.connect(**self.db_params)
@@ -64,15 +67,19 @@ class TemplatesRepos:
             # Execute the SQL query and get the new user's ID
             cursor.execute(query, (name, description,content,ownerid))
             new_template_id = cursor.fetchone()[0]
+            self.conn.commit()
+
+            a = GroupsRepos()
+            for item in items:
+                a.add_escalationstepstemplates(new_template_id,item['name'],"None",1,item['sequence'],"none",item["slatime"])
 
             # Commit the changes to the database
-            self.conn.commit()
 
             # Close the cursor
             cursor.close()
 
             # Return the ID of the newly added user as JSON response
-            return jsonify({"message": "User added successfully", "template_id": new_template_id})
+            return jsonify({"message": "template added successfully", "template_id": new_template_id})
 
         except Exception as e:
             print(f"Error: {e}")

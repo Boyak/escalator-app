@@ -4,7 +4,7 @@ import psycopg2
 class GroupsRepos:
     def __init__(self):
         self.db_params ={
-            'dadatabase': "postgres",
+            'database': "postgres",
             'user' : "vrs_FULL",
             'password' : "Alpha!23Alpha", 
             'host' : "pg-vrsengineers-escalator-hackathon-2023.postgres.database.azure.com",
@@ -17,8 +17,8 @@ class GroupsRepos:
             cursor = self.conn.cursor()
 
             #SQL query
-            query = "SELECT StepID,	Templateid,	Name,	Escalationpointtype,	EscalationPointid, sequence,	Tier,	Slatime   FROM escalationstepstemplates WHERE templateid=%s"
-            cursor.execute(query,(template_id))
+            query = "SELECT StepID,	Templateid,	Name,	Escalationpointtype,	EscalationPointid, sequence,	Tier,	Slatime   FROM escalationstepstemplates WHERE templateid='%s'"
+            cursor.execute(query,(template_id,))
             escalationstepstemplates = cursor.fetchall()
             if escalationstepstemplates:
                 escalationstepstemplates_list = []
@@ -46,7 +46,7 @@ class GroupsRepos:
         try:
             self.conn = psycopg2.connect(**self.db_params)
             cursor = self.conn.cursor()
-            query = "INSERT INTO escalationstepstemplates (Templateid,	Name,	Escalationpointtype,	EscalationPointid, sequence,	Tier,	Slatime) VALUES (%i,%s, %s, %i, %i, %s, %i) RETURNING GroupOwenershipId"
+            query = "INSERT INTO escalationstepstemplates (Templateid,	Name,	Escalationpointtype,	EscalationPointid, sequence,	Tier,	Slatime) VALUES (%s,%s, %s, %s, %s, %s, %s) RETURNING stepid"
             cursor.execute(query, (Templateid,	Name,	Escalationpointtype,	EscalationPointid, sequence,	Tier,	Slatime))
             new_GroupOwenership_id = cursor.fetchone()[0]
             self.conn.commit()
