@@ -25,12 +25,14 @@ class TemplatesRepos:
                 # Create a list of dictionaries where each dictionary represents a user row
                 users_list = []
                 for row in templates:
+                    items = get_ExcaltionStepsTemplates(row[0])
                     user_dict = {
                         "template_id": row[0],
                         "name": row[1],
                         "description": row[2],
                         "content": row[3],
-                        "ownerid": row[4]
+                        "ownerid": row[4],
+                        "items": items
 
                     }
                     users_list.append(user_dict)

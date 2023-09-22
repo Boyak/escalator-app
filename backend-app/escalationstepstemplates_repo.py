@@ -11,34 +11,34 @@ class GroupsRepos:
             'port' : '5432'
         }
         self.conn = None
-    def grt_ExcaltionStepsTemplates(self):
+    def get_ExcaltionStepsTemplates(self, template_id):
         try: 
             self.conn = psycopg2.connect(**self.db_params)
             cursor = self.conn.cursor()
 
             #SQL query
-            query = "SELECT StepID,	Templateid,	Name,	Escalationpointtype,	EscalationPointid, sequence,	Tier,	Slatime   FROM escalationstepstemplates LIMIT 10"
-            cursor.execute(query)
+            query = "SELECT StepID,	Templateid,	Name,	Escalationpointtype,	EscalationPointid, sequence,	Tier,	Slatime   FROM escalationstepstemplates WHERE templateid=%s"
+            cursor.execute(query,(template_id))
             escalationstepstemplates = cursor.fetchall()
             if escalationstepstemplates:
                 escalationstepstemplates_list = []
                 for row in escalationstepstemplates:
                     group_dict = {
-                        "StepID": row[0],
-                        "Templateid": row[1],
-                        "Name": row[2],
-                        "Escalationpointtype":row[3],
-                        "EscalationPointid" : row[4],
+                        "stepID": row[0],
+                        "templateid": row[1],
+                        "name": row[2],
+                        "escalationpointtype":row[3],
+                        "escalationPointid" : row[4],
                         "sequence" :row[5],	
-                        "Tier":row[6],	
-                        "Slatime":row[7]
+                        "tier":row[6],	
+                        "slatime":row[7]
                     }
                     escalationstepstemplates_list.append(group_dict)
-                return jsonify(escalationstepstemplates_list)
+                return escalationstepstemplates_list
             cursor.close()
             self.conn.close()
 
-            return jsonify(escalationstepstemplates)
+            return escalationstepstemplates
         except Exception as e:
             print(f"Error: {e}")
             return "An error occurred."

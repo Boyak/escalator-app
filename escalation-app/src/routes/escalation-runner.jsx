@@ -61,6 +61,20 @@ function EscalationRunner() {
           <TimelineConnector />
           </TimelineSeparator>
           <TimelineContent>
+          <div className='escalator-container'> 
+          <select name="delagate"   onChange={(e) => handleItemInputChange(recordIndex, index, e)}>
+                  <option>-- default</option>
+                  <option>Escalate to Manager</option>
+                  <option>Escalate to Director</option>
+                  <option>Escalate to Group Owner</option>
+                  <option>-- Groups</option>
+                  <option>Project Managment</option>
+                  <option>IT Security</option>
+                  <option>HR</option>
+                  <option>-- People</option>
+                  <option>Wojciech Zajda</option>
+                  <option>Grzegorz Tukin</option>
+                </select>
             <form>
               {inputFields.map((field) => (
                 <div key={field.name}>
@@ -69,7 +83,7 @@ function EscalationRunner() {
                 </div>
               ))}
           </form>
-
+          </div>
           <h4>Next Steps</h4>
           </TimelineContent>
         </TimelineItem>

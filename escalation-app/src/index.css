@@ -7,6 +7,9 @@
   width: 100%;
   justify-content: space-evenly;
 }
+.escalator-container {
+  padding: 10px 0px;
+}
 .ct-menu a {
   text-decoration: none;
   color: black;
