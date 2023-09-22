@@ -66,8 +66,39 @@ function TemplateCreator() {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e, recordIndex) => {
     e.preventDefault();
+    try {
+      const url = 'http://127.0.0.1:5000/templates'; // Replace with your API endpoint
+      const requestBody = {
+        name: formRecords[recordIndex].header,
+        description: "description",
+        content: formRecords[recordIndex].description,
+        ownerid: 1,
+
+        
+      };
+
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(requestBody),
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      setResponseData(data);
+
+      // You can do something with the response data here
+      console.log('Response Data:', data);
+    } catch (error) {
+      console.error('Error:', error);
+    }
     // Handle form submission with formRecords.
     console.log(formRecords);
   };
@@ -83,7 +114,7 @@ function TemplateCreator() {
       <Accordion.Body >
       <div className='escalation-container'>
       <Button onClick={handleShow}><MdOutlineCircleNotifications></MdOutlineCircleNotifications>Manage Notification Content</Button>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={(e)=> handleSubmit(e, recordIndex)}>
       <Timeline
       sx={{
         [`& .${timelineItemClasses.root}:before`]: {
