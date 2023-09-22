@@ -24,7 +24,7 @@ class GroupsRepos:
                 groups_list = []
                 for row in groups:
                     group_dict = {
-                        "Group": row[0],
+                        "GroupID": row[0],
                         "Name": row[1],
                         "Ownerid": row[2]
                     }

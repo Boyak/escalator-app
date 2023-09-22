@@ -42,7 +42,7 @@ class UsersRepos:
         try:
             self.conn = psycopg2.connect(**self.db_params)
             cursor = self.conn.cursor()
-            query = "INSERT INTO Users (Userid, Name, Position, ManagerId) VALUES (%s,%s,%i) RETURNING Userid"
+            query = "INSERT INTO Users (Name, Position, ManagerId) VALUES (%s,%s,%i) RETURNING Userid"
             cursor.execute(query, (Name, Position, Managerid))
             new_user_id = cursor.fetchone()[0]
             self.conn.commit()

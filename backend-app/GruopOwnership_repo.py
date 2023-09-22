@@ -24,8 +24,8 @@ class GroupsRepos:
                 GroupOwnerships_list = []
                 for row in GroupOwnership:
                     group_dict = {
-                        "Group": row[0],
-                        "Name": row[1],
+                        "GroupOwenershipId": row[0],
+                        "UserID": row[1],
                         "Ownerid": row[2]
                     }
                     GroupOwnerships_list.append(group_dict)
